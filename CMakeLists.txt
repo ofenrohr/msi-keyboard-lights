@@ -18,3 +18,5 @@ set(SOURCE_FILES src/main.cpp src/MSIKeyboard.cpp src/MSIKeyboard.h)
 
 add_executable(msi-keyboard-lights ${SOURCE_FILES})
 target_link_libraries(msi-keyboard-lights ${LIBUSB_LIBRARIES})
+
+INSTALL(TARGETS msi-keyboard-lights RUNTIME DESTINATION /usr/bin)
