@@ -4,12 +4,31 @@ Program to change backlight colors of keyboard in MSI laptops. It is based on th
 
 ## Install
 
-To use this program without root privileges, you can add a udev rule. It allows your user to access the backlight device, adds the device to the group `wheel` and creates `/dev/msikeyboard`.
+To use this program without root privileges, you can add a udev rule. It allows your user to access the backlight device and creates the symlink `/dev/msikeyboard`.
 
-Put the following rule in `/etc/udev/rules.d/90-msi-keyboard.rules`
+Installation will put the following rule in `/etc/udev/rules.d/90-msi-keyboard.rules`:
 
 ```
-ATTR{idVendor}=="1771", ATTR{idProduct}=="ff00", GROUP="wheel", MODE="0777", SYMLINK+="msikeyboard"
+ATTR{idVendor}=="1771", ATTR{idProduct}=="ff00", MODE="0777", SYMLINK+="msikeyboard"
+```
+
+Compile and install:
+```
+mkdir build; cd build
+cmake ..
+make
+sudo make install
+```
+
+Reload the udev rules:
+```
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+Test the program:
+```
+msi-keyboard-lights ff0000 00ff00 0000ff
 ```
 
 ## Usage

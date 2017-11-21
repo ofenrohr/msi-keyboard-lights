@@ -20,3 +20,4 @@ add_executable(msi-keyboard-lights ${SOURCE_FILES})
 target_link_libraries(msi-keyboard-lights ${LIBUSB_LIBRARIES})
 
 INSTALL(TARGETS msi-keyboard-lights RUNTIME DESTINATION /usr/bin)
+INSTALL(FILES doc/90-msi-keyboard.rules DESTINATION /etc/udev/rules.d)

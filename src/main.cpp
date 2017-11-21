@@ -53,12 +53,9 @@ bool parseColorString(const std::string &colorStr, MSIKeyboard::Color *color) {
         return false;
     }
 
-    printf("rgb: %s %s %s\n", r.c_str(),g.c_str(),b.c_str());
-
     color->red = parseHex(r);
     color->green = parseHex(g);
     color->blue = parseHex(b);
-
 
     return true;
 }
@@ -82,7 +79,6 @@ int main(int argc, char **argv) {
         }
 
         leftColor = middleColor = rightColor = color;
-        printf("color: %x %x %x\n", color.red, color.green, color.blue);
     }
 
     if (argc == 4) {
@@ -99,10 +95,6 @@ int main(int argc, char **argv) {
         if (!parseColorString(rightColorStr, &rightColor)) {
             return 6;
         }
-
-        printf("left color: %x %x %x\n", leftColor.red, leftColor.green, leftColor.blue);
-        printf("middle color: %x %x %x\n", middleColor.red, middleColor.green, middleColor.blue);
-        printf("right color: %x %x %x\n", rightColor.red, rightColor.green, rightColor.blue);
     }
 
 
