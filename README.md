@@ -14,3 +14,9 @@ ATTR{idVendor}=="1771", ATTR{idProduct}=="ff00", GROUP="wheel", MODE="0777", SYM
 
 ## Usage
 
+```
+  msi-keyboard-lights RRGGBB [RRGGBB RRGGBB]
+```
+
+Either set the same color for all regions or set each region individually
+Color format is red, green, blue written in two digit hex format
