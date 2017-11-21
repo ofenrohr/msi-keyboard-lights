@@ -20,7 +20,7 @@ bool MSIKeyboard::initKeyboard() {
     //handle = hid_open(6000, 65280, NULL);
     handle = hid_open(0x1770, 0xff00, NULL);
 
-    if (handle == NULL) {
+    if (handle == nullptr) {
         printf("failed to open device\n");
         return false;
     }
@@ -36,8 +36,12 @@ bool MSIKeyboard::initKeyboard() {
     return true;
 }
 
+bool MSIKeyboard::setColor(MSIKeyboard::Region region, MSIKeyboard::Color color) {
+    return setColor(region, color.red, color.green, color.blue);
+}
+
 bool MSIKeyboard::setColor(MSIKeyboard::Region region, unsigned char red, unsigned char green, unsigned char blue) {
-    if (handle == NULL) {
+    if (handle == nullptr) {
         printf("invalid device\n");
         return false;
     }

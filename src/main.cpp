@@ -1,13 +1,51 @@
 #include <cstdio>
 #include <string>
+#include <sstream>
 #include "MSIKeyboard.h"
 
 void usage() {
     printf("Usage:\n\n");
-    printf("  msi-keyboard-lights RRGGBB\n");
-    printf("  msi-keyboard-lights RRGGBB RRGGBB RRGGBB\n\n");
+    printf("  msi-keyboard-lights RRGGBB [RRGGBB RRGGBB]\n\n");
     printf("Either set the same color for all regions or set each region individually\n");
-    printf("Color format is red, green, blue written in hex format\n");
+    printf("Color format is red, green, blue written in two digit hex format\n");
+}
+
+bool validHex(const std::string &hex) {
+    if (hex.length() != 2) {
+        return false;
+    }
+    return hex.find_first_not_of("abcdefABCDEF0123456789") == -1;
+}
+
+unsigned char parseHex(const std::string &hex) {
+    return (unsigned char) std::stoul(hex, nullptr, 16);
+}
+
+bool parseColorString(const std::string &colorStr, MSIKeyboard::Color *color) {
+    if (colorStr.length() != 6) {
+        printf("Error: invalid color\n\n");
+        usage();
+        return false;
+    }
+
+    std::string r,g,b;
+    r = colorStr.substr(0,2);
+    g = colorStr.substr(2,2);
+    b = colorStr.substr(4,2);
+    if (!validHex(r) || !validHex(g) || !validHex(b)) {
+        printf("Error: invalid color\n\n");
+        usage();
+        return false;
+    }
+
+    printf("rgb: %s %s %s\n", r.c_str(),g.c_str(),b.c_str());
+
+    color->red = parseHex(r);
+    color->green = parseHex(g);
+    color->blue = parseHex(b);
+
+
+    return true;
 }
 
 int main(int argc, char **argv) {
@@ -16,27 +54,40 @@ int main(int argc, char **argv) {
         return 2;
     }
 
-    unsigned char left_red = 255;
-    unsigned char left_green = 0;
-    unsigned char left_blue = 0;
-
-    unsigned char middle_red = 0;
-    unsigned char middle_green = 255;
-    unsigned char middle_blue = 0;
-
-    unsigned char right_red = 0;
-    unsigned char right_green = 0;
-    unsigned char right_blue = 255;
+    MSIKeyboard::Color leftColor { 255, 0, 0 };
+    MSIKeyboard::Color middleColor { 0, 255, 0 };
+    MSIKeyboard::Color rightColor { 0, 0, 255 };
 
     if (argc == 2) {
         std::string colorStr(argv[1]);
-        if (colorStr.length() != 6) {
-            printf("Error: invalid color\n\n");
-            usage();
-            return 2;
+
+        MSIKeyboard::Color color{};
+        if (!parseColorString(colorStr, &color)) {
+            return 3;
         }
 
-        // TODO: parse color
+        leftColor = middleColor = rightColor = color;
+        printf("color: %x %x %x\n", color.red, color.green, color.blue);
+    }
+
+    if (argc == 4) {
+        std::string leftColorStr(argv[1]);
+        std::string middleColorStr(argv[2]);
+        std::string rightColorStr(argv[3]);
+
+        if (!parseColorString(leftColorStr, &leftColor)) {
+            return 4;
+        }
+        if (!parseColorString(middleColorStr, &middleColor)) {
+            return 5;
+        }
+        if (!parseColorString(rightColorStr, &rightColor)) {
+            return 6;
+        }
+
+        printf("left color: %x %x %x\n", leftColor.red, leftColor.green, leftColor.blue);
+        printf("middle color: %x %x %x\n", middleColor.red, middleColor.green, middleColor.blue);
+        printf("right color: %x %x %x\n", rightColor.red, rightColor.green, rightColor.blue);
     }
 
 
@@ -46,14 +97,14 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    if (!keyboard.setColor(MSIKeyboard::RegionLeft, left_red, left_green, left_blue)) {
-        return 1;
+    if (!keyboard.setColor(MSIKeyboard::RegionLeft, leftColor)) {
+        return 7;
     }
-    if (!keyboard.setColor(MSIKeyboard::RegionMiddle, middle_red, middle_green, middle_blue)) {
-        return 1;
+    if (!keyboard.setColor(MSIKeyboard::RegionMiddle, middleColor)) {
+        return 8;
     }
-    if (!keyboard.setColor(MSIKeyboard::RegionRight, right_red, right_green, right_blue)) {
-        return 1;
+    if (!keyboard.setColor(MSIKeyboard::RegionRight, rightColor)) {
+        return 9;
     }
 
     return 0;

@@ -15,11 +15,18 @@ public:
         RegionRight = 3
     };
 
+    typedef struct Color_t {
+        unsigned char red;
+        unsigned char green;
+        unsigned char blue;
+    } Color;
+
     MSIKeyboard();
     ~MSIKeyboard();
 
     bool initKeyboard();
     bool setColor(Region region, unsigned char red, unsigned  char green, unsigned char blue);
+    bool setColor(Region region, Color color);
 
 private:
     int MAX_STR = 255;
