@@ -1,6 +1,13 @@
 # MSI keyboard backlight
 
-Program to change backlight colors of keyboard in MSI laptops. It is based on the nodeJs package _msi-keyboard_.
+`msi-keyboard-lights` is a lightweight command line utility to change the backlight colors of a Steelseries keyboard in MSI laptops. It 
+is based on [msi-keyboard](https://github.com/stevelacy/msi-keyboard) written by Steve Lacy.
+
+To use this tool, you need a Steelseries keyboard. Output of lsusb on my machine:
+```
+Bus 002 Device 003: ID 1770:ff00
+[...]
+```
 
 ## Install
 
@@ -37,5 +44,5 @@ msi-keyboard-lights ff0000 00ff00 0000ff
   msi-keyboard-lights RRGGBB [RRGGBB RRGGBB]
 ```
 
-Either set the same color for all regions or set each region individually
+Either set the same color for all regions or set each region individually.
 Color format is red, green, blue written in two digit hex format
