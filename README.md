@@ -9,7 +9,7 @@ To use this program without root privileges, you can add a udev rule. It allows 
 Installation will put the following rule in `/etc/udev/rules.d/90-msi-keyboard.rules`:
 
 ```
-ATTR{idVendor}=="1771", ATTR{idProduct}=="ff00", MODE="0777", SYMLINK+="msikeyboard"
+ATTRS{idVendor}=="1770", ATTRS{idProduct}=="ff00", MODE="0666", SYMLINK+="msikeyboard"
 ```
 
 Compile and install:
