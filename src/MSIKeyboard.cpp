@@ -57,15 +57,16 @@ bool MSIKeyboard::setColor(MSIKeyboard::Region region, unsigned char red, unsign
         return false;
     }
 
-    unsigned char buf[8];
-    buf[0] = 1;
-    buf[1] = 2;
-    buf[2] = 64;
-    buf[3] = region;
-    buf[4] = red;
-    buf[5] = green;
-    buf[6] = blue;
-    buf[7] = 0;
+    unsigned char buf[8] = {
+        1,
+        2,
+        64,
+        region,
+        red,
+        green,
+        blue,
+        0
+    };
 
     int ret = hid_send_feature_report(handle, buf, 8);
     if (ret == -1) {
